@@ -1,5 +1,5 @@
 {
-  "name": "fluent-ffmpeg-multistream",
+  "name": "@byslin/fluent-ffmpeg-multistream",
   "version": "1.0.0",
   "description": "Adds support for multiple stream inputs/outputs to fluent-ffmpeg.",
   "main": "src/index.js",

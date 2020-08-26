@@ -1,11 +1,20 @@
 const net = require('net')
 const fs = require('fs')
+const os = require('os')
 
-var counter = 0
-class UnixStream {
+let counter = 0
+
+class NamePipeStream {
   constructor (stream, onSocket) {
-    const path = './' + (++counter) + '.sock'
-    this.url = 'unix:' + path
+    let path
+    const osType = os.type()
+    if (osType === 'Windows_NT') {
+      path = '\\\\.\\pipe\\stream' + (++counter)
+      this.url = path
+    } else {
+      path = './' + (++counter) + '.sock'
+      this.url = 'unix:' + path
+    }
 
     try {
       fs.statSync(path)
@@ -20,11 +29,13 @@ class UnixStream {
 }
 
 function StreamInput (stream) {
-  return new UnixStream(stream, socket => stream.pipe(socket))
+  return new NamePipeStream(stream, socket => stream.pipe(socket))
 }
+
 module.exports.StreamInput = StreamInput
 
 function StreamOutput (stream) {
-  return new UnixStream(stream, socket => socket.pipe(stream))
+  return new NamePipeStream(stream, socket => socket.pipe(stream))
 }
+
 module.exports.StreamOutput = StreamOutput
