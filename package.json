@@ -9,6 +9,9 @@
   "scripts": {
     "test": "standard --fix src/** && tape test/*.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Thomas Mullen",
   "license": "MIT",
   "devDependencies": {
